@@ -1,5 +1,7 @@
 import { HeartIcon } from '@heroicons/react/outline'
 import { useState } from 'react'
+import axios from 'axios'
+import { useEffect } from 'react'
 
 const MAX_TWEET_CHAR = 140
 
@@ -13,24 +15,24 @@ function TweetForm() {
   return (
     <div className="border-b border-silver p-4 space-y-6">
       <div className="flex space-x-5">
-      <img src="/src/imagens/avatar.png" className="w-7"/>
-      <h1 className="font-bold text-lg-xl">Página Inicial</h1>
+        <img src="/src/imagens/avatar.png" className="w-7" />
+        <h1 className="font-bold text-lg-xl">Página Inicial</h1>
       </div>
 
       <form className="pl-12 text-lg flex flex-col">
         <textarea
-        value={text}
-        name="text" 
-        placeholder="O que está acontecendo?"
-        className="bg-transparent outline-none disabled:opacity-50"
-        onChange={changeText}
+          value={text}
+          name="text"
+          placeholder="O que está acontecendo?"
+          className="bg-transparent outline-none disabled:opacity-50"
+          onChange={changeText}
         />
         <div className="flex justify-end items-center space-x-3">
           <span className="text-sm">
-            <span>{text.length}</span> / <span className="text-birdBlue">{ MAX_TWEET_CHAR }</span>
-          
+            <span>{text.length}</span> / <span className="text-birdBlue">{MAX_TWEET_CHAR}</span>
+
           </span>
-        <button className="bg-birdBlue px-5 py-2 rounded-full disabled:opacity-50" disabled={text.length > MAX_TWEET_CHAR}>Tweet</button>
+          <button className="bg-birdBlue px-5 py-2 rounded-full disabled:opacity-50" disabled={text.length > MAX_TWEET_CHAR}>Tweet</button>
         </div>
       </form>
 
@@ -42,6 +44,7 @@ function TweetForm() {
 
 
 function Tweet({ name, username, avatar, children }) {
+
   return (
     // <Title title="olá mundo"></Title> // Tem letra maiuscula é um componente do REACT
     <div className="flex space-x-3 p-4 border-b border-silver">
@@ -64,19 +67,37 @@ function Tweet({ name, username, avatar, children }) {
   )
 }
 
-
-
 export function Home() {
+  const [data, setData] = useState([]) // << joguei em um estado para entender que ele precisa renderizar novamente
+
+  async function getData() {
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDQxdzNtN2IwMDA0YzB2bHM3a2t1Y3J5IiwiaWF0IjoxNjU0NzMyNzAyLCJleHAiOjE2NTQ4MTkxMDJ9.KUI3uy7km22ynSbtbRvZ5G9CPnzRsPGgEHnFkJSJDaQ'
+    const res = await axios.get('http://localhost:9901/tweets', {
+      headers: {
+        'authorization': `Bearer ${token}` 
+      }
+    })
+    setData(res.data)
+  }
+
+  useEffect(() => {
+    getData()
+  }, []) //
+
   return (
     <>
-    <TweetForm />
+      <TweetForm />
       <div>
         <Tweet name="Elon Musk" username="elonmusk" avatar="/src/imagens/avatar.png">
           Lets Make Twitter Maximun Fun!
         </Tweet>
-        <Tweet name="Vinicius Silva" username="viniciusfabi1" avatar="/src/imagens/avatar.png">
-          Lets Make Twitter Maximun Fun!
-        </Tweet>
+       
+       {data.length && data.map(tweet => (
+          <Tweet name={tweet.user.name} username={tweet.user.username} avatar="/src/imagens/avatar.png">
+            {tweet.text}
+          </Tweet>
+        ))}
+    
 
       </div>
     </>
