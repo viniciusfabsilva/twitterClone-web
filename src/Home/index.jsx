@@ -37,7 +37,7 @@ function TweetForm({ loggedInUser, onSuccess }) {
   return (
     <div className="border-b border-silver p-4 space-y-6">
       <div className="flex space-x-5">
-        <img src="/src/imagens/avatar.png" className="w-7" />
+        <img src="./avatar.png" className="w-7" />
         <h1 className="font-bold text-lg-xl">Página Inicial</h1>
       </div>
 
@@ -112,12 +112,12 @@ export function Home({ loggedInUser }) {
     <>
       <TweetForm loggedInUser={loggedInUser} onSuccess={getData} />
       <div>
-        <Tweet name="Elon Musk" username="elonmusk" avatar="/src/imagens/avatar.png">
+        <Tweet name="Elon Musk" username="elonmusk" avatar="./avatar.png">
           Lets Make Twitter Maximun Fun!
         </Tweet>
 
         {data.length && data.map(tweet => (
-          <Tweet key={tweet.id} name={tweet.user.name} username={tweet.user.username} avatar="/src/imagens/avatar.png">
+          <Tweet key={tweet.id} name={tweet.user.name} username={tweet.user.username} avatar="./avatar.png">
             {tweet.text}
           </Tweet>
         ))}
