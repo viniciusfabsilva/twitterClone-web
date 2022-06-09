@@ -67,14 +67,13 @@ function Tweet({ name, username, avatar, children }) {
   )
 }
 
-export function Home() {
+export function Home({ loggedInUser }) {
   const [data, setData] = useState([]) // << joguei em um estado para entender que ele precisa renderizar novamente
 
   async function getData() {
-    const token = ''
     const res = await axios.get('http://localhost:9901/tweets', {
       headers: {
-        'authorization': `Bearer ${token}` 
+        'authorization': `Bearer ${loggedInUser.accessToken}` 
       }
     })
     setData(res.data)
@@ -93,7 +92,7 @@ export function Home() {
         </Tweet>
        
        {data.length && data.map(tweet => (
-          <Tweet name={tweet.user.name} username={tweet.user.username} avatar="/src/imagens/avatar.png">
+          <Tweet key={tweet.id} name={tweet.user.name} username={tweet.user.username} avatar="/src/imagens/avatar.png">
             {tweet.text}
           </Tweet>
         ))}
