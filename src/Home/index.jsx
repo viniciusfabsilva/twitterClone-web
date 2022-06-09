@@ -71,7 +71,7 @@ export function Home() {
   const [data, setData] = useState([]) // << joguei em um estado para entender que ele precisa renderizar novamente
 
   async function getData() {
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDQxdzNtN2IwMDA0YzB2bHM3a2t1Y3J5IiwiaWF0IjoxNjU0NzMyNzAyLCJleHAiOjE2NTQ4MTkxMDJ9.KUI3uy7km22ynSbtbRvZ5G9CPnzRsPGgEHnFkJSJDaQ'
+    const token = ''
     const res = await axios.get('http://localhost:9901/tweets', {
       headers: {
         'authorization': `Bearer ${token}` 
