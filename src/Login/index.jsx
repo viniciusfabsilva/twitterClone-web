@@ -12,18 +12,24 @@ const validationSchema = yup.object({
 })
 
 export function Login({ signInUser }) {
-
-
   const formik = useFormik({
     onSubmit: async values => {
-      const res = await axios.get(`${import.meta.env.VITE_API_HOST}/login`, {
-        auth: {
-          username: values.email,
-          password: values.password
-        }
-      })
+      try {
+        const res = await axios.get(`${import.meta.env.VITE_API_HOST}/login`, {
+          auth: {
+            username: values.email,
+            password: values.password
+          }
+        })
 
-      signInUser(res.data)
+
+        signInUser(res.data)
+      }
+      catch (error) {
+        if (error.response.status === 404) {
+          alert('Email ou senha inválidos. Por favor verifique novamente o email e senha inseridos')
+        }
+      }
     },
     initialValues: {
       email: '',
@@ -55,7 +61,6 @@ export function Login({ signInUser }) {
               {formik.errors.password && formik.touched.password && (
                 <div className="text-red-500 text-sm">{formik.errors.password}</div>
               )}
-
             </div>
             <button type="submit" className="bg-birdBlue py-4 rounded-full disabled:opacity-50 w-full text-lg" disabled={formik.isSubmitting || !formik.isValid} >{formik.isSubmitting ? 'Enviando...' : 'Entrar'}</button>
           </form>

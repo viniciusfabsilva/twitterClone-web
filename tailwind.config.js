@@ -14,6 +14,9 @@ module.exports = {
         ...brandColors,
         backgroundColor: brandColors.richBlack,
         textColor: brandColors.platinum
+      },
+      spacing: {
+        '590': '590px',
       }
     },
   },
